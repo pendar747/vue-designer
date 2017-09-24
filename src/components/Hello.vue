@@ -3,8 +3,8 @@
         <h5>Create or open an existing project to start designing</h5>
         <q-icon name='alarm'></q-icon>
         <ul>
-            <q-btn>Open a project</q-btn>
-            <q-btn>create a project</q-btn>
+            <q-btn icon='create new folder' color='primary'>Open a project</q-btn>
+            <q-btn icon='folder open' color='secondary'>create a project</q-btn>
         </ul>
     </div>
 </template>
