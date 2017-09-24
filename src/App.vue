@@ -9,11 +9,18 @@
   </div>
 </template>
 
-<script>
+<script lang='ts'>
 /*
  * Root component
  */
-export default {}
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import Error404 from './Error404.vue';
+
+@Component
+export default class App extends Vue {
+
+}
 </script>
 
 <style lang="stylus">

@@ -37,7 +37,7 @@ module.exports = {
     rules: [
       { // eslint
         enforce: 'pre',
-        test: /\.(vue|js)$/,
+        test: /\.(js)$/,
         loader: 'eslint-loader',
         include: projectRoot,
         exclude: /node_modules/,
@@ -55,7 +55,10 @@ module.exports = {
         test: /\.ts$/,
         loader: 'ts-loader',
         include: projectRoot,
-        exclude: /node_modules|vue\/src/
+        exclude: /node_modules|vue\/src/,
+        options: {
+            appendTsSuffixTo: [/\.vue$/]
+        }
       },
       {
         test: /\.vue$/,

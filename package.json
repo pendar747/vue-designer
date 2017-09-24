@@ -14,6 +14,7 @@
     "quasar-extras": "0.x",
     "quasar-framework": "^0.14.1",
     "vue": "~2.3.4",
+    "vue-class-component": "^5.0.2",
     "vue-router": "^2.7.0"
   },
   "devDependencies": {
