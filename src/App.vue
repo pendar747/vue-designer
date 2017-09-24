@@ -1,12 +1,12 @@
 <template>
-  <!-- Don't drop "q-app" class -->
-  <div id="q-app">
-    <header></header>
-    <main>
-      <img src="~assets/quasar-logo-full.svg" alt="Quasar PWA">
-      <router-view></router-view>
-    </main>
-  </div>
+    <!-- Don't drop "q-app" class -->
+    <div id="q-app">
+        <header></header>
+        <main>
+            <img src="~assets/quasar-logo-full.svg" alt="Quasar PWA">
+            <router-view></router-view>
+        </main>
+    </div>
 </template>
 
 <script lang='ts'>
@@ -27,11 +27,11 @@ export default class App extends Vue {
 @import '~variables'
 
 main
-  text-align center
-  margin-top 40px
+    text-align center
+    margin-top 40px
 
 header
-  margin 0
-  height 10px
-  background-color $primary
+    margin 0
+    height 10px
+    background-color $primary
 </style>

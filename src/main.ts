@@ -20,7 +20,7 @@ Vue.config.productionTip = false;
 Vue.use(Quasar); // Install Quasar Framework
 
 if (__THEME === 'mat') {
-  // require('quasar-extras/roboto-font')
+    // require('quasar-extras/roboto-font')
 }
 // import 'quasar-extras/material-icons'
 // import 'quasar-extras/ionicons'
@@ -29,7 +29,7 @@ if (__THEME === 'mat') {
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#q-app',
-  router,
-  render: h => h(App)
+    el: '#q-app',
+    router,
+    render: h => h(App)
 });
