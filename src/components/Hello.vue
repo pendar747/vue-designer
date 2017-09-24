@@ -1,19 +1,10 @@
 <template>
     <div class="hello">
-        <h5>Welcome to your Quasar PWA</h5>
+        <h5>Create or open an existing project to start designing</h5>
+        <q-icon name='alarm'></q-icon>
         <ul>
-            <li>
-                <a href="http://quasar-framework.org" target="_blank" rel="noopener">Docs</a>
-            </li>
-            <li>
-                <a href="http://forum.quasar-framework.org" target="_blank" rel="noopener">Forum</a>
-            </li>
-            <li>
-                <a href="https://gitter.im/quasarframework/Lobby" target="_blank" rel="noopener">Gitter Chat</a>
-            </li>
-            <li>
-                <a href="https://twitter.com/quasarframework" target="_blank" rel="noopener">Twitter</a>
-            </li>
+            <q-btn>Open a project</q-btn>
+            <q-btn>create a project</q-btn>
         </ul>
     </div>
 </template>
@@ -22,9 +13,13 @@
 
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import Error404 from './Error404.vue';
+import { QBtn } from 'quasar';
 
-@Component
+@Component({
+    components: {
+        QBtn
+    }
+})
 export default class Hello extends Vue {
     name: string = 'hello';
 }
