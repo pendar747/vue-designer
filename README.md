@@ -3,6 +3,7 @@
 A Quasar project with Typescript and Vue class component support. Other features:
 - 4 spaces for indentation
 - Tslint set up and ready to go
+- Latest version of webpack (v3.5.2) included in Quasar's default template
 
 ## Build Setup
 
