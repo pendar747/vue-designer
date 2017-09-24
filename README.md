@@ -1,12 +1,14 @@
-# Quasar PWA App
+# Quasar Typescript Starter
 
-> A Quasar PWA project
+A Quasar project with Typescript and Vue class component support. Other features:
+- 4 spaces for indentation
+- Tslint set up and ready to go
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-$ npm install
+$ npm install # or yarn for much better speed
 
 # serve with hot reload at localhost:8081
 $ quasar dev
