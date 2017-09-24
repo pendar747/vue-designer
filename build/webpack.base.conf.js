@@ -36,13 +36,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                include: projectRoot,
-                exclude: /node_modules/
-            },
-            {
-                test: /\.ts$/,
+                test: /\.ts|.js$/,
                 exclude: /node_modules/, enforce: 'pre',
                 loader: 'tslint-loader'
             },
@@ -61,7 +55,7 @@ module.exports = {
                 options: {
                     postcss: cssUtils.postcss,
                     loaders: merge({
-                        js: 'babel-loader',
+                        js: 'ts-loader!tslint-loader',
                         ts: 'ts-loader!tslint-loader'
                     }, cssUtils.styleLoaders({
                         sourceMap: useCssSourceMap,
