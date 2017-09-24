@@ -1,3 +1,8 @@
+import Vue from 'vue';
+import Quasar from 'quasar';
+import router from './router';
+import App from './App.vue';
+
 // === DEFAULT / CUSTOM STYLE ===
 // WARNING! always comment out ONE of the two require() calls below.
 // 1. use next line to activate CUSTOM STYLE (./src/themes)
@@ -10,9 +15,6 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 // require(`quasar/dist/quasar.ie`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
-import Vue from 'vue'
-import Quasar from 'quasar'
-import router from './router'
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
@@ -29,5 +31,5 @@ if (__THEME === 'mat') {
 new Vue({
   el: '#q-app',
   router,
-  render: h => h(require('./App'))
+  render: h => h(App)
 })
