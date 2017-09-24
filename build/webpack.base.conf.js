@@ -35,21 +35,16 @@ module.exports = {
   },
   module: {
     rules: [
-      { // eslint
-        enforce: 'pre',
-        test: /\.(js)$/,
-        loader: 'eslint-loader',
-        include: projectRoot,
-        exclude: /node_modules/,
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: projectRoot,
         exclude: /node_modules/
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/, enforce: 'pre',
+        loader: 'tslint-loader'
       },
       {
         test: /\.ts$/,
@@ -67,7 +62,7 @@ module.exports = {
           postcss: cssUtils.postcss,
           loaders: merge({
             js: 'babel-loader',
-            ts: 'ts-loader'
+            ts: 'ts-loader!tslint-loader'
           }, cssUtils.styleLoaders({
             sourceMap: useCssSourceMap,
             extract: env.prod
