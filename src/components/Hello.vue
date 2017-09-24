@@ -1,10 +1,14 @@
 <template>
     <div class="hello">
         <h5>Create or open an existing project to start designing</h5>
-        <q-icon name='alarm'></q-icon>
         <ul>
-            <q-btn icon='create new folder' color='primary'>Open a project</q-btn>
-            <q-btn icon='folder open' color='secondary'>create a project</q-btn>
+            <q-btn 
+                icon='create new folder' 
+                color='primary'
+                @click='openAProject()'>Open a project</q-btn>
+            <q-btn 
+                icon='folder open' 
+                color='secondary'>create a project</q-btn>
         </ul>
     </div>
 </template>
@@ -14,6 +18,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { QBtn } from 'quasar';
+import { remote } from 'electron';
 
 @Component({
     components: {
@@ -22,6 +27,18 @@ import { QBtn } from 'quasar';
 })
 export default class Hello extends Vue {
     name: string = 'hello';
+    openAProject () {
+        console.log('open a project');
+        const path = remote.dialog.showOpenDialog({
+            properties: [
+                'openFile', 
+                'openDirectory', 
+                'multiSelections'
+            ]
+        });
+
+        console.log(path);
+    }
 }
 </script>
 

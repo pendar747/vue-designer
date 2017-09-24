@@ -10,6 +10,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "electron": "^1.7.8",
     "quasar-extras": "0.x",
     "quasar-framework": "0.14.1",
     "vue": "~2.3.4",
