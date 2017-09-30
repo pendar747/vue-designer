@@ -1,0 +1,25 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Run AVA test",
+                "preLaunchTask": "compile file",
+                "program": "${workspaceRoot}/node_modules/ava/profile.js",
+                "outFiles": [
+                    "${workspaceRoot}/dist/test/current/*.js"
+                ],
+                "sourceMaps": true,
+                "args": [
+                    "${workspaceRoot}/dist/test/current/${fileBasenameNoExtension}.js",
+                    "--tap"
+                ],
+                "console": "integratedTerminal",
+                "skipFiles": [
+                    "${workspaceRoot}/node_modules/**/*.js",
+                    "<node_internals>/**/*.js"
+                ]
+            }
+        ]
+    }

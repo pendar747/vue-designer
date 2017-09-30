@@ -1,6 +1,6 @@
-import nodePath from 'path';
-import assert from 'assert';
-import os from 'os';
+import * as nodePath from 'path';
+import * as assert from 'assert';
+import * as os from 'os';
 
 export default class Path {
     private _absolutePath: string;
@@ -9,7 +9,7 @@ export default class Path {
         : nodePath.win32;
 
     get absolutePath (): string {
-        return this.absolutePath;
+        return this._absolutePath;
     }
 
     private static resolve = Path._resolver.resolve;

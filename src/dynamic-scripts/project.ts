@@ -1,5 +1,6 @@
 import Script from './script';
 import Path from './path';
+import * as ts from 'typescript';
 
 export default class Project {
     private _rootPath: Path;
@@ -9,8 +10,8 @@ export default class Project {
         return this._rootPath;
     }
 
-    constructor (rootPath: string) {
-        this._rootPath = new Path(rootPath);
+    constructor (rootPath: Path) {
+        this._rootPath = rootPath;
     }
 
     static moduleIsAbsolute (moduleName: string): boolean {
@@ -18,10 +19,10 @@ export default class Project {
     }
 
     resolveAbsoluteModule (moduleName: string): Path {
-        return new Path('');
+        return new Path('/');
     }
 
-    resolvePathToDependency (file: Path, dependencyPath: string) {
+    resolveDependency (file: Path, dependencyPath: string) {
         return Project.moduleIsAbsolute(dependencyPath)
             ? this.resolveAbsoluteModule(dependencyPath)
             : file.resolvePathTo(dependencyPath);
