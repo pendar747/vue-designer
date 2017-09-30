@@ -7,7 +7,8 @@
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
     "build": "node build/script.build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "test": "tsc --outDir ./dist/test && ava ./dist/test/**/*.spec.js"
   },
   "dependencies": {
     "electron": "^1.7.8",
@@ -18,8 +19,10 @@
     "vue-router": "2.7.0"
   },
   "devDependencies": {
+    "@types/electron": "^1.6.10",
     "@types/node": "8.0.30",
     "autoprefixer": "6.4.0",
+    "ava": "^0.22.0",
     "colors": "1.1.2",
     "connect-history-api-fallback": "1.1.0",
     "copy-webpack-plugin": "4.0.1",

@@ -25,7 +25,8 @@ import Component from 'vue-class-component';
 import { QBtn } from 'quasar';
 import { remote } from 'electron';
 import fs from 'fs';
-import createVuePreview from '../createVuePreview';
+import { Project, Script } from "../dynamic-scripts";
+
 
 @Component({
     components: {
@@ -34,27 +35,29 @@ import createVuePreview from '../createVuePreview';
 })
 export default class Hello extends Vue {
     name: string = 'hello';
+    private _project: Project;
+
     openAProject () {
         console.log('open a project');
         const path = remote.dialog.showOpenDialog({
             properties: [ 'openDirectory' ]
         });
 
-        console.log(path);
+        if (path) {
+            this._project = new Project(path[0]);
+        }
     }
 
     openFile() {
         const path = remote.dialog.showOpenDialog({
-            properties: [ 'openFile' ]
+            properties: [ 'openFile' ],
+            defaultPath: this._project.rootPath
         });
-        console.log('Opening file', path); 
-        const content = fs.readFileSync(path[0], {
-            encoding: 'utf8'
-        });
-        console.log(content);
-        console.log('Compiled ts to:');
-        createVuePreview(content);
-
+        if (!path) {
+            return;
+        }
+        const script = new Script(path[0], this._project);
+        script.transpile();
     }
 }
 </script>
