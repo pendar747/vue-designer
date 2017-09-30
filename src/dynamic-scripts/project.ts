@@ -1,25 +1,30 @@
 import Script from './script';
+import Path from './path';
 
 export default class Project {
-    private _rootPath;
+    private _rootPath: Path;
+    private static _absolutePattern: RegExp = new RegExp(/^\.+[\/\\]/).compile();
 
     get rootPath () {
         return this._rootPath;
     }
 
     constructor (rootPath: string) {
-        this._rootPath = rootPath;
+        this._rootPath = new Path(rootPath);
     }
 
     static moduleIsAbsolute (moduleName: string): boolean {
-        return true;
+        return this._absolutePattern.test(moduleName);
     }
-    
-    resolveModulePath (moduleName: string): string {
-        return '';
+
+    resolveAbsoluteModule (moduleName: string): Path {
+        return new Path('');
     }
-    
-    extractNodeModule (packageName: string): Script {
-        return new Script('', this._rootPath);
+
+    resolvePathToDependency (file: Path, dependencyPath: string) {
+        return Project.moduleIsAbsolute(dependencyPath)
+            ? this.resolveAbsoluteModule(dependencyPath)
+            : file.resolvePathTo(dependencyPath);
     }
+        
 }

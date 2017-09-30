@@ -1,27 +1,28 @@
-import * as fs from 'fs';
-import * as ts from 'typescript';
+import fs from 'fs';
+import ts from 'typescript';
 import Project from './project';
+import Path from './path';
 
 export default class Asset {
-    protected _path: string;
+    protected _path: Path;
     protected fileContent: string;
     protected _project: Project;
 
-    constructor (filePath: string, project: Project) {
-        this._path = filePath;
+    constructor (file: Path, project: Project) {
+        this._path = file;
         this._project = project;
+        this.readFile();
     }
 
-    get fileName () {
-        return 'foo';
-    }
-
-    get path () {
+    get path (): Path {
         return this._path;
     }
 
     readFile () {
-        this.fileContent = fs.readFileSync(this._path, { encoding: 'utf8' });
+        this.fileContent = fs.readFileSync(
+            this._path.absolutePath, 
+            { encoding: 'utf8' }
+        );
     }
     
 }

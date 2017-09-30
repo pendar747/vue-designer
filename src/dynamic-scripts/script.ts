@@ -4,48 +4,45 @@ import Project from './project';
 import Asset from './asset';
 import TranspiledAsset from './transpiled-asset';
 import vm from 'vm';
+import Path from './path';
 
 export default class Script extends TranspiledAsset {
     protected _dependencies: Script[];
 
-    protected scanDependencies () {
+    protected scanDependencyPaths (): Path[] {
         const source = ts.createSourceFile(
-            this.fileName,
+            this.path.basename,
             this.fileContent,
             this.compilerOptions.target || ts.ScriptTarget.ES5
         );
-        const findImports = (node: ts.ImportClause): Script => {
-            const moduleNode = node.getChildAt(0);
-            const moduleName = moduleNode.getText();
-            console.log(moduleName);
-            const isAbsolute = Project.moduleIsAbsolute(moduleName);
-            const path = isAbsolute
-                ? moduleName
-                : this._project.resolveModulePath(moduleName);
-            return isAbsolute
-                ? this._project.extractNodeModule(path)
-                : new Script(path, this._project);
+        const findImportPaths = (node: ts.ImportClause): Path => {
+            const moduleName = node.getChildAt(0).getText();
+            return this._project.resolvePathToDependency(this._path, moduleName);
         };
-
-        this._dependencies = source.getChildren()
+ 
+        return source.getChildren()
             .filter(node => ts.isImportClause(node))
-            .map(findImports);
-        console.log(this._dependencies); 
+            .map(findImportPaths);
+    }
+
+    protected createDependencies () {
+        this._dependencies = this.scanDependencyPaths()
+            .map(path => new Script(path, this._project));
     }
 
     transpile () {
         const res = ts.transpileModule(this.fileContent, {
             compilerOptions: this.compilerOptions,
-            moduleName: this.fileName
+            moduleName: this.path.basename
         });
         this.transpiledContent = res.outputText;
         console.log(this.transpiledContent);
-        this.scanDependencies();
+        this.createDependencies();
     }
 
     run () {
         const vmOptions: vm.ScriptOptions = {
-            filename: this.path
+            filename: this.path.absolutePath
         };
         const virtualScript = new vm.Script(this.transpiledContent, vmOptions);
         const sandbox = {
