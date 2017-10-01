@@ -12,6 +12,17 @@ export default class Path {
         return this._absolutePath;
     }
 
+    /**
+     * all the segments of the path except the empty segments ('')
+     * e.g. ['foo', 'bar'] for /foo/bar
+     *      ['c:', 'Users', 'Fin'] for c:\\Users\\Fin
+     */
+    get segments (): string[] {
+        return this._absolutePath
+            .split(Path._resolver.sep)
+            .filter(seg => seg.length);
+    }
+
     private static resolve = Path._resolver.resolve;
 
     /**
@@ -24,7 +35,7 @@ export default class Path {
             Path._resolver.isAbsolute(absolutePath), 
             'The given path must be absolute.'
         );
-        this._absolutePath = absolutePath;
+        this._absolutePath = Path._resolver.normalize(absolutePath);
     }
 
     /**
@@ -44,7 +55,8 @@ export default class Path {
      */
     resolvePathTo (path: string): Path {
         assert.ok(!Path.isAbsolute(path), 'path must be relative');
-        return new Path(Path._resolver.resolve([this._absolutePath, path]));
+        const resolved = Path._resolver.resolve(this._absolutePath, path);
+        return new Path(resolved);
     }
 
     /**
@@ -52,7 +64,8 @@ export default class Path {
      * @param path path to another file or directory
      */
     isEqualTo (path: Path): boolean {
-        return this._absolutePath === path.absolutePath;
+        return path.segments.length === this.segments.length
+            && path.segments.every((seg, i) => this.segments[i] === seg);
     }
 
     /**
@@ -69,6 +82,6 @@ export default class Path {
             Path.isAbsolute(absolutePath),
             'absolutePath must be absolute'
         );
-        return new Path(Path.resolve([absolutePath, relativePath]));
+        return new Path(Path.resolve(absolutePath, relativePath));
     }
 }

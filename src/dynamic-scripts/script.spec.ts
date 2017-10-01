@@ -18,7 +18,7 @@ test.after(t => {
     sandbox.restore();
 });
 
-test('foo', t => {
+test('can find the imported module names', t => {
     t.plan(3);
     const sampleFile = '\
         import foo from "foo";\
