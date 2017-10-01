@@ -15,9 +15,13 @@ export default abstract class TranspiledAsset extends Asset {
     };
 
     get dependencies (): TranspiledAsset[] {
-        return this.dependencies;
+        return this._dependencies;
     }
     
+    /**
+     * given a path finds its corresponding dependency in the dependency tree
+     * @param filePath file path for a dependency
+     */
     findDependency (filePath: Path): TranspiledAsset | undefined {
         let result;
         this._dependencies.forEach(dep => {
