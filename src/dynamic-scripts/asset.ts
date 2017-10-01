@@ -5,7 +5,7 @@ import Path from './path';
 
 export default class Asset {
     protected _path: Path;
-    protected fileContent: string;
+    protected _rawContent: string;
     protected _project: Project;
 
     constructor (file: Path, project: Project) {
@@ -19,7 +19,7 @@ export default class Asset {
     }
 
     readFile () {
-        this.fileContent = fs.readFileSync(
+        this._rawContent = fs.readFileSync(
             this._path.absolutePath, 
             { encoding: 'utf8' }
         );

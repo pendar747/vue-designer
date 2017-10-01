@@ -31,7 +31,7 @@ test('can find the imported module names', t => {
     class TestScript extends Script {
         readFile () {
             t.pass('readFile is called.');
-            this.fileContent = sampleFile;
+            this._rawContent = sampleFile;
         }
         scanDependencyPaths (): string[] {
             const res = super.scanDependencyPaths();

@@ -12,7 +12,7 @@ export default class Script extends TranspiledAsset {
     protected scanDependencyPaths (): string[] {
         const source = ts.createSourceFile(
             this.path.basename,
-            this.fileContent,
+            this._rawContent,
             this.compilerOptions.target || ts.ScriptTarget.ES5,
             true
         );
@@ -40,7 +40,7 @@ export default class Script extends TranspiledAsset {
     }
 
     transpile () {
-        const res = ts.transpileModule(this.fileContent, {
+        const res = ts.transpileModule(this._rawContent, {
             compilerOptions: this.compilerOptions,
             moduleName: this.path.basename
         });

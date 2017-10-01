@@ -51,7 +51,7 @@ test('can create a path given an absolute and a relative path', t => {
     }, /absolutePath|absolute/);
 });
 
-test.only('must get the correct platform resolver', t => {
+test('must get the correct platform resolver', t => {
     const osType = sionon.stub(os, 'type').returns('Linux');
 
     const path = new Path('\\foo\\bar');
