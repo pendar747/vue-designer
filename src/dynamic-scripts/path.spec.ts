@@ -16,13 +16,13 @@ test('should reject non absolute paths', t => {
 test('should get the basename and directory', t => {
     const path = new Path('C:\\Users\\foo\\vue-designer');
     t.is(path.basename, 'vue-designer');
-    t.is(path.directory.absolutePath, 'C:\\Users\\foo');
+    t.true(path.directory.isEqualTo(new Path('C:\\Users\\foo')));
 });
 
 test('resolves the absolute path to a path relative to this one', t => {
     const path = new Path('C:\\Users\\foo\\vue-designer');
     const other = path.resolvePathTo('../bar');
-    t.is(other.absolutePath, 'C:\\Users\\foo\\bar');
+    t.true(other.isEqualTo(new Path('C:\\Users\\foo\\bar')));
 
     const other2 = path.resolvePathTo('./nam/num');
     t.is(other2.absolutePath, 'C:\\Users\\foo\\vue-designer\\nam\\num');
@@ -41,7 +41,7 @@ test('can correctly check equality and splitting paths to segments', t => {
 
 test('can create a path given an absolute and a relative path', t => {
     const path = Path.createPathFrom('../foo/bar', 'c:/Users/Public');
-    t.is(path.absolutePath, 'c:\\Users\\foo\\bar');
+    t.true(path.isEqualTo(new Path('c:\\Users\\foo\\bar')));
 
     t.throws(() => {
         Path.createPathFrom('c:\\foo', 'c:\\bar');
@@ -62,4 +62,13 @@ test('must get the correct platform resolver', t => {
     t.deepEqual(path2.segments, ['c:', 'foo', 'bar']);
 
     osType.restore();
+});
+
+test('must create a new path by joining other paths', t => {
+    const path = Path.join('c:\\foo\\bar', 'meo');
+    t.true(path.isEqualTo(new Path('c:\\foo\\bar\\meo')));
+
+    t.throws(() => {
+        Path.join('./foo', 'bar');
+    }, /basePath|absolute/);
 });

@@ -51,6 +51,7 @@ export default class Path {
 
     /**
      * Resolves the absolute path to a path relative to this file
+     * Note assumes that this path is a directory
      * @param path relative path to another file
      */
     resolvePathTo (path: string): Path {
@@ -83,5 +84,12 @@ export default class Path {
             'absolutePath must be absolute'
         );
         return new Path(Path.resolve(absolutePath, relativePath));
+    }
+
+    static join (basePath: string, ...paths: string[]): Path {
+        assert(Path.isAbsolute(basePath), 'basePath must be absolute.');
+        return new Path(
+            Path._resolver.join(basePath, ...paths)
+        );
     }
 }

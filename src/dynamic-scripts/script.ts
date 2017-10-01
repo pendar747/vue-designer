@@ -5,6 +5,7 @@ import Asset from './asset';
 import TranspiledAsset from './transpiled-asset';
 import * as vm from 'vm';
 import Path from './path';
+import * as assert from 'assert';
 
 export default class Script extends TranspiledAsset {
     protected _dependencies: Script[];
@@ -35,10 +36,19 @@ export default class Script extends TranspiledAsset {
 
     protected createDependencies () {
         this._dependencies = this.scanDependencyPaths()
-            .map(mod => this._project.resolveDependency(this._path, mod))
-            .map(path => new Script(path, this._project));
+            .map(mod => {
+                const path = this._project.resolveDependency(this._path, mod);
+                assert.ok(path, `Missing dependency path for module ${mod} \
+                    referenced from ${this._path.absolutePath}`);
+                return path;
+            })
+            .map((path: Path) => new Script(path, this._project));
     }
 
+    /**
+     * Transpiles the script and fetches all its dependencies
+     * Note: it throws an error if a dependency is missing.
+     */
     transpile () {
         const res = ts.transpileModule(this._rawContent, {
             compilerOptions: this.compilerOptions,
