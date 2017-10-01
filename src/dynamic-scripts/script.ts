@@ -13,13 +13,15 @@ export default class Script extends TranspiledAsset {
         const source = ts.createSourceFile(
             this.path.basename,
             this.fileContent,
-            this.compilerOptions.target || ts.ScriptTarget.ES5
+            this.compilerOptions.target || ts.ScriptTarget.ES5,
+            true
         );
 
         const importedModules: string[] = [];
         const findImportPaths = (node: ts.Node): void => {
             if (ts.isImportDeclaration(node)) {
-                const moduleName = (<any>node.moduleSpecifier).text;
+                const moduleName = node.moduleSpecifier.getText()
+                    .replace(/["']/g, '');
                 importedModules.push(moduleName);
             } else {
                 node.forEachChild(findImportPaths);
