@@ -14,7 +14,7 @@ test.before(t => {
     sandbox = sinon.sandbox.create();
 });
 
-test.after(t => {
+test.afterEach(t => {
     sandbox.restore();
 });
 
@@ -42,7 +42,7 @@ test('can find the imported module names', t => {
     
     const resolvePathToDependency = sandbox
         .stub(Project.prototype, 'resolveDependency')
-        .returnsArg(1);
+        .returns(new Path('/'));
 
     sandbox.stub(ts, 'transpileModule').returns('');
 
@@ -54,4 +54,47 @@ test('can find the imported module names', t => {
 
     script.transpile();
     t.is(resolvePathToDependency.callCount, 3);
+});
+
+test('should find the correct resolved module paths', t => {
+    const sampleFile = '\
+        import foo from "foo";\
+        import j from "./j";\
+        import a from "../a";\
+        \
+        function foobar () {};\
+    ';
+    
+    class TestScript extends Script {
+        readFile () {
+            t.pass('readFile is called.');
+            this._rawContent = sampleFile;
+        }
+        scanDependencyPaths (): string[] {
+            const res = super.scanDependencyPaths();
+            t.deepEqual(res, ['foo', './j', '../a']);
+            return res;
+        }
+    }
+
+    sandbox.stub(fs, 'readFileSync').returns('{"main": "dist/index.js"}');
+    sandbox.stub(fs, 'existsSync').returns(true);
+    const readdir = sandbox.stub(fs, 'readdirSync')
+        .onFirstCall().returns(['jo.js'])
+        .onSecondCall().returns(['a.ts']);
+
+    const project = new Project(new Path('c:/foo/bar'));
+    const script = new TestScript(new Path('c:/foo/bar/jo.js'), project);
+
+    script.transpile();
+    t.is(script.dependencies.length, 3);
+    script.dependencies.forEach(dep => {
+        console.log(dep.path.absolutePath);
+    });
+    t.true(script.dependencies[0].path
+        .isEqualTo(new Path('c:/foo/bar/node_modules/foo/dist/index.js')));
+    t.true(script.dependencies[1].path
+        .isEqualTo(new Path('c:/foo/bar/jo.js')));
+    t.true(script.dependencies[2].path
+        .isEqualTo(new Path('c:/foo/a.ts')));
 });

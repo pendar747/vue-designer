@@ -42,7 +42,13 @@ export default class Script extends TranspiledAsset {
                     referenced from ${this._path.absolutePath}`);
                 return path;
             })
-            .map((path: Path) => new Script(path, this._project));
+            .map((path: Path) => {
+                const script = new Script(path, this._project);
+                if (!path.hasExtension('js', 'ts')) {
+                    script.resolveExtension();
+                }
+                return script;
+            });
     }
 
     /**
