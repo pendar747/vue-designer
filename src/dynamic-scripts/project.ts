@@ -1,4 +1,3 @@
-import Script from './script';
 import Path from './path';
 import * as ts from 'typescript';
 import * as path from 'path';
