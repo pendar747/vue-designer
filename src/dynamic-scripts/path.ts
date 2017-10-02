@@ -68,6 +68,11 @@ export default class Path {
         return path.segments.length === this.segments.length
             && path.segments.every((seg, i) => this.segments[i] === seg);
     }
+    
+    hasExtension (extension: string, ...other: string[]) {
+        const ext = Path._resolver.extname(this.basename);
+        return ext === `.${extension}` || other.some(otherExt => ext === `.${otherExt}`);
+    }
 
     /**
      * returns a new Path for the the given path relative to the absolutePath

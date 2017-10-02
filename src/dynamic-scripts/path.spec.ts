@@ -72,3 +72,17 @@ test('must create a new path by joining other paths', t => {
         Path.join('./foo', 'bar');
     }, /basePath|absolute/);
 });
+
+test('should determin if the path has any of the given extensions', t => {
+    let path = new Path('/foo/bar/jo.js');
+    t.true(path.hasExtension('js'));
+
+    path = new Path('/foo/bar/bo');
+    t.false(path.hasExtension('js', 'ts'));
+
+    path = new Path('/bar/foo/j.ts');
+    t.true(path.hasExtension('js', 'ts'));
+
+    path = new Path('/bar/foo.ts/fubu');
+    t.false(path.hasExtension('ts'));
+});
