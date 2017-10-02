@@ -75,6 +75,18 @@ test('resolves absolute modules correctly', t => {
     }
 });
 
+test('should return undefined if a node module doesnt exist', t => {
+    const project = new Project(new Path('c://Users/penda/projects/vue-designer'));
+    const file = new Path('c:/Users/penda/projects/vue-designer/foo.js');
+
+    sandbox.stub(fs, 'existsSync').returns(false);
+    
+    const readFileSync = sandbox.stub(fs, 'readFileSync');
+
+    const dep2 = project.resolveDependency(file, 'moment');
+    t.is(dep2, undefined);
+});
+
 test('gets the right path for node modules', t => {
     const project = new Project(new Path('c:/Users/foo'));
     t.true(project.nodeModulesPath.isEqualTo(new Path('c:/Users/foo/node_modules')));
