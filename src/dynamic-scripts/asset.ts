@@ -1,5 +1,7 @@
 import * as fs from 'fs';
 import * as ts from 'typescript';
+import * as assert from 'assert';
+
 import Project from './project';
 import Path from './path';
 
@@ -16,6 +18,26 @@ export default class Asset {
 
     get path (): Path {
         return this._path;
+    }
+
+    /**
+     * returns name of the file including the extension
+     */
+    private _getFullName (): string {
+        const files = fs.readdirSync(this._path.directory.absolutePath);
+        const pattern = new RegExp(this._path.basename);
+        const possibilities = files.filter(file => pattern.test(file))
+            .sort((a, b) => a.length - b.length);
+        assert.ok(possibilities.length > 0, 
+            `No file ${this._path.basename} found in ${this._path.directory.absolutePath}`);
+        return possibilities[0];
+    }
+
+    /**
+     * sets the path of the file to one that includes the extension
+     */
+    resolveExtension () {
+        this._path = Path.join(this._path.directory.absolutePath, this._getFullName());
     }
 
     readFile () {
