@@ -130,14 +130,12 @@ test.only('should be able to run in vm', t => {
             return new Path(`c:/foo/${mod}.js`);
         });
 
-    sandbox.stub(fs, 'readFileSync').returns('');
+    sandbox.stub(fs, 'readFileSync')
+        .onCall(0).returns(fooFile)
+        .onCall(1).returns(jFile)
+        .onCall(2).returns(aFile);
     
     const originalTranspile = ts.transpileModule;
-    sandbox.stub(ts, 'transpileModule')
-        .onCall(0).callsFake(originalTranspile) 
-        .onCall(1).returns({outputText: fooFile})
-        .onCall(2).returns({outputText: jFile})
-        .onCall(3).returns({outputText: aFile});
 
     const project = new Project(new Path('c:/foo/bar'));
     const script = new TestScript(new Path('c:/foo/bar/jo.js'), project);
