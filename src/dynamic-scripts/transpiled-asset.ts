@@ -9,7 +9,7 @@ export default abstract class TranspiledAsset extends Asset {
     protected _dependencies: TranspiledAsset[] = [];
 
     protected  compilerOptions: ts.CompilerOptions = { 
-        module: ts.ModuleKind.System,
+        module: ts.ModuleKind.CommonJS,
         target: ts.ScriptTarget.ES2015,
         allowJS: true
     };

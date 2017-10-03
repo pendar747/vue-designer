@@ -74,10 +74,17 @@ export default class Script extends TranspiledAsset {
         const loadAndRunModule = (moduleName) => {
             const modulePath = this._project.resolveDependency(this._path, moduleName);
             if (modulePath) {
-                return this._dependencies
+                const dep = this._dependencies
                     .find(script => script.path.isEqualTo(modulePath));
+                if (dep) {
+                    return dep.run();
+                } else {
+                    throw new Error(
+                        `No dependency found four ${moduleName} \
+                        imported by ${this._path.absolutePath}`);
+                }
             } else {
-                new Error(`No path found for module ${moduleName}`);
+                throw new Error(`No path found for module ${moduleName}`);
             }
         };
         const virtualScript = new vm.Script(this.transpiledContent, vmOptions);
@@ -85,11 +92,14 @@ export default class Script extends TranspiledAsset {
             module: {
                 exports: {}
             },
+            exports: {},
             require: loadAndRunModule
         };
         const context = vm.createContext(sandbox);
         virtualScript.runInContext(context);
-        return sandbox.module.exports;
+        return Object.keys(sandbox.module.exports).length
+            ? sandbox.module.exports
+            : sandbox.exports;
     }
 
 }

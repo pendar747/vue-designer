@@ -98,3 +98,52 @@ test('should find the correct resolved module paths', t => {
     t.true(script.dependencies[2].path
         .isEqualTo(new Path('c:/foo/a.ts')));
 });
+
+test.only('should be able to run in vm', t => {
+    const fooFile = 'module.exports.default = "foo";';
+    const jFile = 'module.exports.default = "j"';
+    const aFile = 'module.exports.default = "a"';
+    const sampleFile = '\
+        import foo from "foo";\
+        import j from "./j";\
+        import a from "../a";\
+        \
+        export default function foobar () {\
+            return foo+j+a;\
+        };\
+    ';
+    
+    class TestScript extends Script {
+        readFile () {
+            t.pass('readFile is called.');
+            this._rawContent = sampleFile;
+        }
+        scanDependencyPaths (): string[] {
+            const res = super.scanDependencyPaths();
+            t.deepEqual(res, ['foo', './j', '../a']);
+            return res;
+        }
+    }
+    
+    sandbox.stub(Project.prototype, 'resolveDependency')
+        .callsFake((file, mod) => {
+            return new Path(`c:/foo/${mod}.js`);
+        });
+
+    sandbox.stub(fs, 'readFileSync').returns('');
+    
+    const originalTranspile = ts.transpileModule;
+    sandbox.stub(ts, 'transpileModule')
+        .onCall(0).callsFake(originalTranspile) 
+        .onCall(1).returns({outputText: fooFile})
+        .onCall(2).returns({outputText: jFile})
+        .onCall(3).returns({outputText: aFile});
+
+    const project = new Project(new Path('c:/foo/bar'));
+    const script = new TestScript(new Path('c:/foo/bar/jo.js'), project);
+
+    script.transpile();
+
+    const foobar = script.run().default;
+    t.is(foobar(), 'fooja');
+});
