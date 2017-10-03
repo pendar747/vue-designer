@@ -17,7 +17,11 @@
                 "es5",
                 "--moduleResolution",
                 "node",
-                "--sourceMap"
+                "--sourceMap",
+                "--lib",
+                "ES5",
+                "--lib",
+                "ES2015"
             ],
             "problemMatcher": [
                 "$tsc"

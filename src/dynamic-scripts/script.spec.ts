@@ -46,7 +46,7 @@ test('can find the imported module names', t => {
 
     sandbox.stub(ts, 'transpileModule').returns('');
 
-    sandbox.stub(fs, 'readFileSync').returns(sampleFile);
+    sandbox.stub(fs, 'readFileSync').returns('const foo = \'hello\';');
 
 
     const project = new Project(new Path('/'));

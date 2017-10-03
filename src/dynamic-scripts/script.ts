@@ -62,18 +62,34 @@ export default class Script extends TranspiledAsset {
         });
         this.transpiledContent = res.outputText;
         this.createDependencies();
+
+        // for now also transpile all the dependencies
+        this.dependencies.forEach(script => script.transpile());
     }
 
-    run () {
+    run (): any {
         const vmOptions: vm.ScriptOptions = {
             filename: this.path.absolutePath
         };
+        const loadAndRunModule = (moduleName) => {
+            const modulePath = this._project.resolveDependency(this._path, moduleName);
+            if (modulePath) {
+                return this._dependencies
+                    .find(script => script.path.isEqualTo(modulePath));
+            } else {
+                new Error(`No path found for module ${moduleName}`);
+            }
+        };
         const virtualScript = new vm.Script(this.transpiledContent, vmOptions);
         const sandbox = {
-            module: {}
+            module: {
+                exports: {}
+            },
+            require: loadAndRunModule
         };
         const context = vm.createContext(sandbox);
         virtualScript.runInContext(context);
+        return sandbox.module.exports;
     }
 
 }
