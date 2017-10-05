@@ -5,8 +5,8 @@ import test from 'ava';
 import Asset from './asset';
 
 import Script from './script';
-import Project from './project';
-import Path from './path';
+import Project from '../general//project';
+import Path from '../general//path';
 
 let sandbox: sinon.SinonSandbox;
 

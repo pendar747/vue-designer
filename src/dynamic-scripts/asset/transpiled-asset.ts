@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as ts from 'typescript';
-import Project from './project';
+import Project from '../general//project';
 import Asset from './asset';
-import Path from './path';
+import Path from '../general//path';
 
 export default abstract class TranspiledAsset extends Asset {
     protected transpiledContent: string;

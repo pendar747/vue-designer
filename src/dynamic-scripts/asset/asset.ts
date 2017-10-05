@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as ts from 'typescript';
 import * as assert from 'assert';
 
-import Project from './project';
-import Path from './path';
+import Project from '../general//project';
+import Path from '../general//path';
 
 export default class Asset {
     protected _path: Path;

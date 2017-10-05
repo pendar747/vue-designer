@@ -1,7 +1,7 @@
 import test from 'ava';
 import TranspiledAsset from './transpiled-asset';
-import Path from './path';
-import Project from './project';
+import Path from '../general//path';
+import Project from '../general//project';
 import * as sinon from 'sinon';
 import * as fs from 'fs';
 

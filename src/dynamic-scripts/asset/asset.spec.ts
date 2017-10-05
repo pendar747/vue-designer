@@ -1,7 +1,7 @@
 import test from 'ava';
 import Asset from './asset';
-import Project from './project';
-import Path from './path';
+import Project from '../general//project';
+import Path from '../general//path';
 import * as fs from 'fs';
 import * as sinon from 'sinon';
 

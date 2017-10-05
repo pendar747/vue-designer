@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as ts from 'typescript';
-import Project from './project';
+import Project from '../general//project';
 import Asset from './asset';
 import TranspiledAsset from './transpiled-asset';
 import * as vm from 'vm';
-import Path from './path';
+import Path from '../general//path';
 import * as assert from 'assert';
 
 export default class Script extends TranspiledAsset {
